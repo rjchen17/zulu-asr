@@ -1,0 +1,11 @@
+# Environment for fairseq. Note that you still have to install fairseq. Consult the official
+# repo for instructions. 
+name: fairseq
+channels:
+ - conda-forge
+dependencies:
+- python==3.10
+- pip<=24.1 # As of fairseq==0.12.2, there is deprecated syntax that is no longer supported in pip>=24.2
+- pip:
+  - torch
+  - soundfile
