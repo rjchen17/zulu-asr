@@ -41,3 +41,43 @@ All instances of non-speech, denoted by IARPA with <>, e.g. "<no-speech>" have b
 ---
 
 The model was trained first utilizing all the untranscribed data via continued pre-training (CPT). CPT is a process where a pre-trained checkpoint of a speech model is further pretrained with additional untranscribed data. The checkpoint we use is XLSR-128. After CPT, the model is then fine-tuned on transcribed data. Due to an issue with fairseq, the models are only trained on one of the transcribed datasets. One model was trained on the conversational-transcribed dataset, while the other was trained on the scripted-transcribed dataset. 
+
+# Running the code
+---
+
+## Replicate training
+---
+
+Training is done in two main steps: CPT and fine-tuning. Training is facilitated through the `fairseq` implementation of `hydra`. 
+
+```
+# Run CPT
+
+conda activate fairseq
+
+fairseq-hydra-train \
+--config-dir /workspace/configs/
+--config-name pretrain.yaml
+dataset.train_subset=\'subset1,subset2\' \
+checkpoint.save_dir = /path/to/save/dir
+
+# Run fine-tuning
+fairseq-hydra-train \
+--config-dir /workspace/configs/ \
+--config-name ft.yml \
+model.w2v_path=/path/to/pretrained/model.pt \
+checkpoint.save_dir=/path/to/save/dir
+```
+
+The training parameters are already set in the configuration files in this repo. The manifests are simply text files that contain paths to the directories actually containing the audio (and the total samples of each file for batch size calculations).
+
+## Inference
+---
+
+Build from Dockerfile
+Set model path environment variable at MODEL_PATH
+Set data path environment variable at DATA_PATH
+Set results path environment variable at RESULTS_PATH
+
+Activate the `fairseq` conda environment
+Run the `infer.sh` script
