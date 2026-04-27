@@ -6,6 +6,8 @@ channels:
 dependencies:
 - python==3.10
 - pip<=24.1 # As of fairseq==0.12.2, there is deprecated syntax that is no longer supported in pip>=24.2
+- cmake>=3.10
+- gcc
 - pip:
   - torch
   - soundfile
