@@ -15,7 +15,10 @@ RUN git clone ...flashlightsequnece && \
     cd sequence && \
     conda run -n fairseq pip install --editable ./
 
-# Model mount point — override at runtime with:
-#   docker run -v /host/path/to/model:/workspace/model -e MODEL_PATH=/workspace/model ...
 ENV MODEL_PATH=/workspace/model
+ENV DATA_PATH=/workspace/data
+ENV RESULTS_PATH=/workspace/results
+
 VOLUME ["/workspace/model"]
+VOLUME ["/workspace/data"]
+VOLUME ["/workspace/results"]

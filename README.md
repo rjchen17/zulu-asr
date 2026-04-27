@@ -45,6 +45,26 @@ The model was trained first utilizing all the untranscribed data via continued p
 # Running the code
 ---
 
+## Build container + run inference
+---
+
+To run inference:
+
+```
+# Build container
+docker run \
+  -v /host/model:/workspace/model \
+  -v /host/audio:/workspace/data \
+  -v /host/output:/workspace/results \
+  your-image
+
+# Activate conda environment
+conda activate fairseq
+
+# Run inference
+./infer.sh
+```
+
 ## Replicate training
 ---
 
@@ -52,7 +72,6 @@ Training is done in two main steps: CPT and fine-tuning. Training is facilitated
 
 ```
 # Run CPT
-
 conda activate fairseq
 
 fairseq-hydra-train \
@@ -65,19 +84,8 @@ checkpoint.save_dir = /path/to/save/dir
 fairseq-hydra-train \
 --config-dir /workspace/configs/ \
 --config-name ft.yml \
-model.w2v_path=/path/to/pretrained/model.pt \
+model.w2v_path=/workspace/model/model.pt \
 checkpoint.save_dir=/path/to/save/dir
 ```
 
 The training parameters are already set in the configuration files in this repo. The manifests are simply text files that contain paths to the directories actually containing the audio (and the total samples of each file for batch size calculations).
-
-## Inference
----
-
-Build from Dockerfile
-Set model path environment variable at MODEL_PATH
-Set data path environment variable at DATA_PATH
-Set results path environment variable at RESULTS_PATH
-
-Activate the `fairseq` conda environment
-Run the `infer.sh` script
